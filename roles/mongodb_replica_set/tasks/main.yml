@@ -1,0 +1,17 @@
+---
+
+- name: delete mongo
+  import_tasks: delete_mongo.yml
+
+- name: Install moongodb and run it on VM's
+  import_tasks: install.yml
+
+- name: Config mongodb and replica set
+  import_tasks: replica_config.yml  
+
+- name: create users
+  import_tasks: add_users.yml
+  when: groups.mongo.index(inventory_hostname) == 0
+
+- name: make mongo secure
+  import_tasks: security.yml

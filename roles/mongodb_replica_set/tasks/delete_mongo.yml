@@ -1,0 +1,27 @@
+---
+- name: Stop service mongod
+  service:
+    name: mongod
+    state: stopped
+
+- name: Remove all "mongo" packages
+  apt:
+    name: mongodb-org*
+    state: absent
+    purge: yes
+
+- name: delete mongo socket file
+  file:
+    path: /tmp/mongodb* 
+    state: absent
+
+- name: Delete mongo log
+  file:
+    state: absent
+    path: /var/log/mongodb 
+
+- name: Delete mongo lib folder
+  file:
+    state: absent
+    path: /var/lib/mongodb
+

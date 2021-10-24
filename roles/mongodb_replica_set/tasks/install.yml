@@ -1,0 +1,38 @@
+---
+  - name: create mongodb dir
+    file:
+      path: /home/host/mongodb
+      state: directory
+
+  - name: copy mongodb folder host
+    copy:
+      src: ubuntu-{{ansible_distribution_version}}/
+      dest: /home/host/mongodb
+
+  - name: Making a list of files
+    shell: "ls /home/host/mongodb"
+    register: command_result
+
+  - name: Installing Debian sequentially.
+    become: yes
+    shell: "dpkg -i /home/host/mongodb/{{item}}"
+    with_items: 
+      - "{{ command_result.stdout_lines }}"
+
+  - name: start mongodb
+    service: name=mongod state=started
+
+  - name: check if mongod is active
+    command: systemctl status sshd
+    register: mongodb_check     
+    
+
+  - name: Install Dependencies
+    become: true
+    apt:
+      name: ['python-pip','python-setuptools']
+      state: latest
+      update_cache: yes
+
+  - name: install pymongo
+    pip: name=pymongo state=latest

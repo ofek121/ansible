@@ -1,0 +1,26 @@
+---
+- name: Stop mongod as a service
+  service:
+    name: mongod
+    state: stopped
+
+- name: Update mongod.conf
+  template:
+   src: updateMongod.conf.j2
+   dest: /etc/mongod.conf
+   owner: mongodb
+   group: mongodb
+   mode: 0400
+  
+- name: copy security key file to nodes
+  copy:
+    src: /tmp/mongodb-keyfile 
+    dest: "{{ keyFilePath }}/secret"
+    owner: mongodb
+    group: mongodb
+    mode: 0400
+
+- name: Start mongod as a service with security
+  service:
+    name: mongod
+    state: started

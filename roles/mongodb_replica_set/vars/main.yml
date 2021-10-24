@@ -1,0 +1,26 @@
+---
+# vars file for mongodb_replica_set
+
+#replica set commend for create prime replica
+mongo_commend: rs.add({host:"{{ hostvars[item]['inventory_hostname'] }}:27017"})
+
+# mongod.conf vars
+dbPath: /var/lib/mongodb
+replicaSetName: "rs0"
+log_path: /var/log/mongodb/mongod.log
+
+#security vars
+keyFilePath: /var/lib/mongodb/
+
+#users info vars
+database: admin
+
+superUserName: superUser
+superUserPassword: Password!
+
+adminUserName: adminUser
+adminUserPassword: Password!
+
+userName: appUser
+userPassword: Password!
+

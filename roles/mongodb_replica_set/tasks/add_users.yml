@@ -1,0 +1,29 @@
+---
+- name: Create superuser for database
+  mongodb_user:
+    database: "{{database}}"
+    replica_set: "{{replicaSetName}}" 
+    name: "{{superUserName}}"
+    password: "{{superUserPassword}}"
+    roles: root
+    state: present
+
+- name: Create adminuser
+  mongodb_user:
+    database: "{{database}}"
+    replica_set: "{{replicaSetName}}"
+    name: "{{adminUserName}}"
+    password: "{{adminUserPassword}}"
+    roles: userAdminAnyDatabase
+    state: present
+
+- name: Create app user for database
+  mongodb_user:
+    login_user: "{{superUserName}}"
+    login_password: "{{superUserPassword}}"
+    database: "{{database}}"
+    replica_set: "{{replicaSetName}}"
+    name: "{{userName}}"
+    password: "{{userPassword}}"
+    roles: readWriteAnyDatabase
+    state: present

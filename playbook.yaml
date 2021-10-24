@@ -1,0 +1,12 @@
+---
+
+# Create key file
+- hosts: localhost
+  tasks:
+  - name: create key file locally
+    local_action: shell openssl rand -base64 755 > /tmp/mongodb-keyfile
+
+- hosts: mongo
+  become: true
+  roles:
+    - role: mongodb_replica_set
